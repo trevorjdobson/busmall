@@ -14,6 +14,7 @@ var Img = function(name, url){
   imagesArr.push(this);
 };
 
+//appends a single image to the DOM
 function appendImg(image, position,index){
   var img = document.getElementById(`${position}-image`);
   img.src = image.url;
@@ -21,6 +22,7 @@ function appendImg(image, position,index){
   image.shown++;
 }
 
+//Chooses the three images and renders them with the appendImg function
 function renderImages(){
   if(current.length > 0){
     previous = current;
@@ -45,20 +47,18 @@ function renderImages(){
     rightIndex = Math.floor(Math.random() * imagesArr.length);
   }
   current.push(imagesArr[rightIndex]);
-  console.log('index', current);
-
 
   appendImg(imagesArr[leftIndex],'left',leftIndex);
   appendImg(imagesArr[middleIndex],'middle',middleIndex);
   appendImg(imagesArr[rightIndex],'right',rightIndex);
 }
 
+//adds to click totals and either renders new images or renders the totals
 function handleClick(e){
   let index = e.target.name;
   totalClicks++;
   imagesArr[index].clicked++;
-  console.log(totalClicks);
-  if(totalClicks >= 4){
+  if(totalClicks >= 25){
     left.removeEventListener('click',handleClick);
     right.removeEventListener('click',handleClick);
     middle.removeEventListener('click',handleClick);
@@ -68,28 +68,36 @@ function handleClick(e){
   }
 }
 
-var left = document.getElementById('left-image');
-var right = document.getElementById('right-image');
-var middle = document.getElementById('middle-image');
-
-left.addEventListener('click', handleClick);
-right.addEventListener('click', handleClick);
-middle.addEventListener('click', handleClick);
-
+//renders the totals ul
 function renderTotals(arr){
   let list = document.getElementById('totals-list');
-  let listItem = document.createElement('li');
   for(var i=0; i<arr.length;i++){
+    let bigListItem = document.createElement('li');
+    let subListItem = document.createElement('ul');
     let text = document.createTextNode(`${arr[i].name}`);
+    bigListItem.appendChild(text);
+    bigListItem.appendChild(subListItem);
+
+    let listItem = document.createElement('li');
+    text = document.createTextNode(`Times Shown: ${arr[i].shown}`);
     listItem.appendChild(text);
-    list.appendChild(listItem);
+    subListItem.appendChild(listItem);
+
+    listItem = document.createElement('li');
+    text = document.createTextNode(`Times Clicked: ${arr[i].clicked}`);
+    listItem.appendChild(text);
+    subListItem.appendChild(listItem);
+    if(arr[i].shown > 0){
+      listItem = document.createElement('li');
+      text = document.createTextNode(`Percentage: ${(arr[i].clicked/arr[i].shown)*100}`);
+      listItem.appendChild(text);
+      subListItem.appendChild(listItem);
+    }
+    list.appendChild(bigListItem);
   }
 }
 
-
-
-
-
+//Creates all the image objects and then renders three images
 function createImages(){
   new Img('Bag','./assets/bag.jpg');
   new Img('Banana','./assets/banana.jpg');
@@ -101,17 +109,28 @@ function createImages(){
   new Img('Cthulhu','./assets/cthulhu.jpg');
   new Img('Dog Duck','./assets/dog-duck.jpg');
   new Img('Dragon','./assets/dragon.jpg');
-  // new Img('Pen','./assets/pen.jpg');
-  // new Img('Pet Sweep','./assets/pet-sweep.jpg');
-  // new Img('Scissors','./assets/scissors.jpg');
-  // new Img('Shark','./assets/shark.jpg');
-  // new Img('Sweep','./assets/sweep.png');
-  // new Img('Tauntaun','./assets/tauntaun.jpg');
-  // new Img('Unicorn','./assets/unicorn.jpg');
-  // new Img('USB','./assets/usb.gif');
-  // new Img('Water Can','./assets/water-can.jpg');
-  // new Img('Wine Glass','./assets/wine-glass.jpg');
+  new Img('Pen','./assets/pen.jpg');
+  new Img('Pet Sweep','./assets/pet-sweep.jpg');
+  new Img('Scissors','./assets/scissors.jpg');
+  new Img('Shark','./assets/shark.jpg');
+  new Img('Sweep','./assets/sweep.png');
+  new Img('Tauntaun','./assets/tauntaun.jpg');
+  new Img('Unicorn','./assets/unicorn.jpg');
+  new Img('USB','./assets/usb.gif');
+  new Img('Water Can','./assets/water-can.jpg');
+  new Img('Wine Glass','./assets/wine-glass.jpg');
+
+  renderImages();
 }
 
+//adds event listners
+var left = document.getElementById('left-image');
+var right = document.getElementById('right-image');
+var middle = document.getElementById('middle-image');
+left.addEventListener('click', handleClick);
+right.addEventListener('click', handleClick);
+middle.addEventListener('click', handleClick);
+
+//kicks everything off
 createImages();
-renderImages();
+
