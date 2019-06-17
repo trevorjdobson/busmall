@@ -89,7 +89,7 @@ function renderTotals(arr){
     subListItem.appendChild(listItem);
     if(arr[i].shown > 0){
       listItem = document.createElement('li');
-      text = document.createTextNode(`Percentage: ${(arr[i].clicked/arr[i].shown)*100}`);
+      text = document.createTextNode(`Percentage: %${((arr[i].clicked/arr[i].shown)*100).toFixed(2)}`);
       listItem.appendChild(text);
       subListItem.appendChild(listItem);
     }
