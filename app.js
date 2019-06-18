@@ -68,33 +68,9 @@ function handleClick(e){
   }
 }
 
-//renders the totals ul
+//renders the totals bar chart
 function renderTotals(arr){
-  let list = document.getElementById('totals-list');
-  for(var i=0; i<arr.length;i++){
-    let bigListItem = document.createElement('li');
-    let subListItem = document.createElement('ul');
-    let text = document.createTextNode(`${arr[i].name}`);
-    bigListItem.appendChild(text);
-    bigListItem.appendChild(subListItem);
-
-    let listItem = document.createElement('li');
-    text = document.createTextNode(`Times Shown: ${arr[i].shown}`);
-    listItem.appendChild(text);
-    subListItem.appendChild(listItem);
-
-    listItem = document.createElement('li');
-    text = document.createTextNode(`Times Clicked: ${arr[i].clicked}`);
-    listItem.appendChild(text);
-    subListItem.appendChild(listItem);
-    if(arr[i].shown > 0){
-      listItem = document.createElement('li');
-      text = document.createTextNode(`Percentage: %${((arr[i].clicked/arr[i].shown)*100).toFixed(2)}`);
-      listItem.appendChild(text);
-      subListItem.appendChild(listItem);
-    }
-    list.appendChild(bigListItem);
-  }
+  buildChart(arr);
 }
 
 //Creates all the image objects and then renders three images
@@ -133,4 +109,6 @@ middle.addEventListener('click', handleClick);
 
 //kicks everything off
 createImages();
+
+
 
