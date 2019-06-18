@@ -44,22 +44,26 @@ function buildChart(arr){
       }]
     },
     options: {
+      maintainAspectRatio: false,
       tooltips: {
         mode: 'label',
         callbacks: {
           label: function(tooltipItem) {
-            var label = labels[tooltipItem.datasetIndex];
-
-            return label;
-          },
-          afterLabel: function(tooltipItem){
-            var displayed = `Times Shown: ${shown[tooltipItem.datasetIndex]} Times Clicked: ${clicked[tooltipItem.datasetIndex]} Percentage: %${percentages[tooltipItem.datasetIndex]}`;
+            console.log(tooltipItem.index);
+            var displayed = `Times Shown: ${shown[tooltipItem.index]} Times Clicked: ${clicked[tooltipItem.index]} Percentage: %${percentages[tooltipItem.index]}`;
             return displayed;
           },
         },
       },
       scales: {
         yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Percentage',
+            ticks : {
+              suggestedMax: 100
+            }
+          },
           ticks: {
             beginAtZero: true
           }
