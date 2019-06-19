@@ -51,21 +51,30 @@ function renderImages(){
   appendImg(imagesArr[leftIndex],'left',leftIndex);
   appendImg(imagesArr[middleIndex],'middle',middleIndex);
   appendImg(imagesArr[rightIndex],'right',rightIndex);
-}
 
-//adds to click totals and either renders new images or renders the totals
-function handleClick(e){
-  let index = e.target.name;
-  totalClicks++;
-  imagesArr[index].clicked++;
+  let state = {
+    imagesArr: imagesArr,
+    totalClicks: totalClicks,
+    current: current,
+    previous: previous,
+    currentIndex: [leftIndex,middleIndex,rightIndex]
+  };
+  localStorage.setItem('state',JSON.stringify(state));
+
   if(totalClicks >= 25){
     left.removeEventListener('click',handleClick);
     right.removeEventListener('click',handleClick);
     middle.removeEventListener('click',handleClick);
     renderTotals(imagesArr);
-  }else{
-    renderImages();
   }
+}
+
+//adds to click totals and either renders new images or renders the totals
+function handleClick(e){
+  let index = e.target.name;
+  imagesArr[index].clicked++;
+  renderImages();
+  totalClicks++;
 }
 
 //renders the totals bar chart
@@ -108,7 +117,31 @@ right.addEventListener('click', handleClick);
 middle.addEventListener('click', handleClick);
 
 //kicks everything off
-createImages();
+if(localStorage.state){
+  let state = JSON.parse(localStorage.getItem('state'));
+  totalClicks = state.totalClicks;
+  imagesArr = state.imagesArr;
+  current = state.current;
+  previous = state.previous;
+
+  appendImg(imagesArr[state.currentIndex[0]],'left',state.currentIndex[0]);
+  appendImg(imagesArr[state.currentIndex[1]],'middle',state.currentIndex[1]);
+  appendImg(imagesArr[state.currentIndex[2]],'right',state.currentIndex[2]);
+
+  if(totalClicks >= 25){
+    left.removeEventListener('click',handleClick);
+    right.removeEventListener('click',handleClick);
+    middle.removeEventListener('click',handleClick);
+    renderTotals(imagesArr);
+  }
+}else{
+  createImages();
+}
+
+function clearStorage(){
+  localStorage.clear();
+  document.location.reload();
+}
 
 
 
