@@ -138,6 +138,10 @@ if(localStorage.state){
   createImages();
 }
 
+function clearStorage(){
+  localStorage.clear();
+  document.location.reload();
+}
 
 
 
